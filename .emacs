@@ -5,6 +5,7 @@
 (setq additional-paths '("~" "~/.emacs.d/plugins/tabbar"))
 (setq load-path (append additional-paths load-path))
 
+(load "~/.emacs.d/plugins/nxml-mode-20041004/rng-auto.el")
 (setq cscope-do-not-update-database t)
 (require'xcscope)
 (load-file "~/.emacs.d/plugins/eproject-0.4/eproject.el")
