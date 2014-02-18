@@ -552,3 +552,12 @@
 ;; This doesn't work for revert, I don't know.
 ;;(add-hook 'after-revert-hook 'ztl-modification-state-change)
 (add-hook 'first-change-hook 'ztl-on-buffer-modification)
+
+;;;; This snippet enables lua-mode
+;; This line is not necessary, if lua-mode.el is already on your load-path
+(add-to-list 'load-path "~/.emacs.d/plugins/lua-mode")
+
+(autoload 'lua-mode "lua-mode" "Lua editing mode." t)
+(add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode))
+(add-to-list 'interpreter-mode-alist '("lua" . lua-mode))
+
