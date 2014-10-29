@@ -637,5 +637,6 @@ configuration.")
       (select-frame-by-name "Ediff")
         (set-frame-size(selected-frame) 40 10))))
 
+(desktop-read) ; reload the desktop file (type only once: M-x desktop-save)
 
 
