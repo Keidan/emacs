@@ -9,6 +9,8 @@
 (setq cscope-do-not-update-database t)
 (require'xcscope)
 (load-file "~/.emacs.d/plugins/eproject-0.4/eproject.el")
+(load-file "~/.emacs.d/plugins/auto-complete-extension.el")
+
 
 ;;;;;;;;;;;;;;;;;
 ;; APPEARANCE
