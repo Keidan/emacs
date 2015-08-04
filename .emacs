@@ -9,7 +9,6 @@
 (setq cscope-do-not-update-database t)
 (require'xcscope)
 (load-file "~/.emacs.d/plugins/eproject-0.4/eproject.el")
-(load-file "~/.emacs.d/plugins/auto-complete-extension.el")
 
 
 ;;;;;;;;;;;;;;;;;
@@ -639,6 +638,12 @@ configuration.")
       (select-frame-by-name "Ediff")
         (set-frame-size(selected-frame) 40 10))))
 
-(desktop-read) ; reload the desktop file (type only once: M-x desktop-save)
+; (desktop-read) ; reload the desktop file (type only once: M-x desktop-save)
+
+(add-to-list 'load-path "/home/kei/.emacs.d/")
+(require 'auto-complete-config)
+(add-to-list 'ac-dictionary-directories "~/.emacs.d//ac-dict")
+(ac-config-default)
+(load-file "~/.emacs.d/plugins/auto-complete-extension.el")
 
 
