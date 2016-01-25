@@ -642,8 +642,31 @@ configuration.")
 
 (add-to-list 'load-path "/home/kei/.emacs.d/")
 (require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d//ac-dict")
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 (ac-config-default)
 (load-file "~/.emacs.d/plugins/auto-complete-extension.el")
 
 
+;;(require 'rect-mark)
+;;(global-set-key (kbd "C-x r C-SPC") 'rm-set-mark)
+;;(global-set-key (kbd "C-x r C-x")   'rm-exchange-point-and-mark)
+;;(global-set-key (kbd "C-x r C-w")   'rm-kill-region)
+;;(global-set-key (kbd "C-x r M-w")   'rm-kill-ring-save)
+
+(load-file "~/.emacs.d/plugins/rect-mark.el")
+(require 'rect-mark)
+(global-set-key (kbd "C-x r C-w")   'rm-kill-region)
+(global-set-key (kbd "C-x r C-SPC") 'rm-set-mark)
+(global-set-key (kbd "C-w")  
+  '(lambda(b e) (interactive "r") 
+     (if rm-mark-active 
+       (rm-kill-region b e) (kill-region b e))))
+(global-set-key (kbd "M-w")  
+  '(lambda(b e) (interactive "r") 
+     (if rm-mark-active 
+       (rm-kill-ring-save b e) (kill-ring-save b e))))
+(global-set-key (kbd "C-x C-x")  
+  '(lambda(&optional p) (interactive "p") 
+     (if rm-mark-active 
+       (rm-exchange-point-and-mark p) (exchange-point-and-mark p))))
+(global-set-key (kbd "C-x r <down-mouse-1>") 'rm-mouse-drag-region)
