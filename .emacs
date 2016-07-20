@@ -1,15 +1,3 @@
-;;(cd "~/devel/")
-
-(add-to-list 'load-path "~/.emacs.d/plugins/cscope")
-(setq additional-paths '("~" "~/.emacs.d/plugins"))
-(setq additional-paths '("~" "~/.emacs.d/plugins/tabbar"))
-(setq load-path (append additional-paths load-path))
-
-(load "~/.emacs.d/plugins/nxml-mode-20041004/rng-auto.el")
-(setq cscope-do-not-update-database t)
-(require'xcscope)
-(load-file "~/.emacs.d/plugins/eproject-0.4/eproject.el")
-
 
 ;;;;;;;;;;;;;;;;;
 ;; APPEARANCE
@@ -32,10 +20,6 @@
 
 ;; Environnement
 (set-language-environment "UTF-8")
-
-;; Fichier custom
-;(setq custom-file "~/.emacs-custom.el")
-;(load custom-file)
 
 ;; Inhiber l'affichage du message d'accueil
 (setq inhibit-startup-message t)
@@ -421,85 +405,23 @@
 ; Activation systématique du mode mineur HS dans les modes C/C++
 (add-hook 'c-mode-common-hook 'hs-minor-mode t)
 
-; configure ECB and activate if not in terminal
-(require 'ecb)
-(setq ecb-tip-of-the-day nil)
-(setq ecb-help-info-start-file nil)
-(setq ecb-help-html-start-file nil)
-(if (not (eq window-system nil))
-  (ecb-activate))
-(defun ecb-off ()
-  (interactive)
-  ()
-  (ecb-deactivate)
-  (set-screen-width 80))
-(defun ecb-on ()
-  (interactive)
-  ()
-  (set-screen-width 119)
-  (ecb-activate))
-(custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- )
-
-(require 'ido)
-(ido-mode t)
-(setq ido-enable-flex-matching t) ; fuzzy matching is a must have
- 
-;; This tab override shouldn't be necessary given ido's default 
-;; configuration, but minibuffer-complete otherwise dominates the 
-;; tab binding because of my custom tab-completion-everywhere 
-;; configuration.
-(add-hook 'ido-setup-hook 
-          (lambda () 
-            (define-key ido-completion-map [tab] 'ido-complete)))
-
-;(add-to-list 'load-path "~/.emacs.d/plugins/yasnippet/")
-;(when (require 'yasnippet nil t)
-;  (yas/initialize)
-;  (yas/load-directory "~/.emacs.d/plugins/yasnippet/snippets/"))
-
-
-;; Proper kill of emacs by shutdown -h
-(defun my-sigusr2-handler ()
-  (interactive)
-  (kill-emacs))
-(define-key special-event-map [sigusr2] 'my-sigusr2-hander)
-
-
-(global-set-key (kbd "C-x C-b") 'ibuffer)
-;; Ensure ibuffer opens with point at the current buffer's entry.
-(defadvice ibuffer
-  (around ibuffer-point-to-most-recent) ()
-  "Open ibuffer with cursor pointed to most recent buffer name."
-  (let ((recent-buffer-name (buffer-name)))
-    ad-do-it
-    (ibuffer-jump-to-buffer recent-buffer-name)))
-(ad-activate 'ibuffer)
-
-;; ---------------------------------------
-;; load cmake-mode
-;; ---------------------------------------
-(require 'cmake-mode)
-(setq auto-mode-alist
-        (append '(("CMakeLists\\.txt\\'" . cmake-mode)
-                  ("\\.cmake\\'" . cmake-mode))
-                auto-mode-alist))
-;; ---------------------------------------
-;; load doxygen
-;; ---------------------------------------
-(require 'doxymacs)
-(add-hook 'c-mode-common-hook'doxymacs-mode)
-(defun doxymacs-font-lock ()
-  (interactive)
-  (font-lock-add-keywords nil doxymacs-doxygen-keywords))
+;-------------
+; Speedbar
+;-------------
+;(speedbar 1)
+(load "~/.emacs.d/sr-speedbar.el")
+(add-hook 'emacs-startup-hook (lambda ()
+  (sr-speedbar-open)
+))
+(setq speedbar-show-unknown-files t) ; show all files
+(setq speedbar-use-images nil) ; use text forbuttons (instead of the images)
+(setq sr-speedbar-right-side nil) ; put on left side
+(setq sr-speedbar-width 30)
 
 ;; ---------------------------------------
 ;; load tabbar
 ;; ---------------------------------------
+;(load "~/.emacs.d/tabbar.el")
 (require 'tabbar)
 (tabbar-mode 1)
 (tabbar-local-mode 1)
@@ -554,119 +476,12 @@
 ;;(add-hook 'after-revert-hook 'ztl-modification-state-change)
 (add-hook 'first-change-hook 'ztl-on-buffer-modification)
 
-;;;; This snippet enables lua-mode
-;; This line is not necessary, if lua-mode.el is already on your load-path
-(add-to-list 'load-path "~/.emacs.d/plugins/lua-mode")
 
-(autoload 'lua-mode "lua-mode" "Lua editing mode." t)
-(add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode))
-(add-to-list 'interpreter-mode-alist '("lua" . lua-mode))
-
-;; system changes
-(put 'downcase-region 'disabled nil)
-(put 'upcase-region 'disabled nil)
-
-;; ---------------------------------------
-;; load ediff
-;; ---------------------------------------
-;; Usage: emacs -diff file1 file2
-(load-library "ediff")
-(defun command-line-diff (switch)
-   (let ((file1 (pop command-line-args-left))
-        (file2 (pop command-line-args-left)))
-   (ediff file1 file2)))
-    
-(add-to-list 'command-switch-alist '("diff" . command-line-diff))
-;; This is what you probably want if you are using a tiling window
-;; manager under X, such as ratpoison.
-(setq ediff-window-setup-function 'ediff-setup-windows-plain)
-;; To make ediff to be horizontally split use:
-;; Note that you can also split the window depending on the frame width:
-(setq ediff-split-window-function (if (> (frame-width) 150)
-                                   'split-window-horizontally
-                                   'split-window-vertically))
-;; Save the windows configuration before ediff
-;; Some custom configuration to ediff
-(defvar my-ediff-bwin-config nil "Window configuration before ediff.")
-(defcustom my-ediff-bwin-reg ?b
-  "*Register to be set up to hold `my-ediff-bwin-config'
-configuration.")
-    
-(defvar my-ediff-awin-config nil "Window configuration after ediff.")
-(defcustom my-ediff-awin-reg ?e
-  "*Register to be used to hold `my-ediff-awin-config' window
-configuration.")
-    
-(defun my-ediff-bsh ()
-  "Function to be called before any buffers or window setup for
-  ediff."
-  (setq my-ediff-bwin-config (current-window-configuration))
-  (when (characterp my-ediff-bwin-reg)
-    (set-register my-ediff-bwin-reg
-      (list my-ediff-bwin-config (point-marker)))))
-     
-(defun my-ediff-ash ()
-  "Function to be called after buffers and window setup for ediff."
-  (setq my-ediff-awin-config (current-window-configuration))
-  (when (characterp my-ediff-awin-reg)
-    (set-register my-ediff-awin-reg
-      (list my-ediff-awin-config (point-marker)))))
-    
-(defun my-ediff-qh ()
-  "Function to be called when ediff quits."
-  (when my-ediff-bwin-config
-    (set-window-configuration my-ediff-bwin-config)))
-    
-(add-hook 'ediff-before-setup-hook 'my-ediff-bsh)
-(add-hook 'ediff-after-setup-windows-hook 'my-ediff-ash 'append)
-(add-hook 'ediff-quit-hook 'my-ediff-qh)
-
-(add-hook 'ediff-load-hook
-  (lambda ()
-    (add-hook 'ediff-before-setup-hook
-      (lambda ()
-        (setq ediff-saved-window-configuration (current-window-configuration))))
-    
-    (let ((restore-window-configuration
-      (lambda ()
-        (set-window-configuration ediff-saved-window-configuration))))
-          (add-hook 'ediff-quit-hook restore-window-configuration 'append)
-          (add-hook 'ediff-suspend-hook restore-window-configuration 'append))))
-(add-hook 'ediff-startup-hook
-  (lambda () 
-    (progn
-      (select-frame-by-name "Ediff")
-        (set-frame-size(selected-frame) 40 10))))
-
-; (desktop-read) ; reload the desktop file (type only once: M-x desktop-save)
-
-(add-to-list 'load-path "/home/kei/.emacs.d/")
+;--------
+; auto complete
+;--------
+(add-to-list 'load-path "~/.emacs.d/auto-complete/")
 (require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/auto-complete/ac-dict")
 (ac-config-default)
-(load-file "~/.emacs.d/plugins/auto-complete-extension.el")
 
-
-;;(require 'rect-mark)
-;;(global-set-key (kbd "C-x r C-SPC") 'rm-set-mark)
-;;(global-set-key (kbd "C-x r C-x")   'rm-exchange-point-and-mark)
-;;(global-set-key (kbd "C-x r C-w")   'rm-kill-region)
-;;(global-set-key (kbd "C-x r M-w")   'rm-kill-ring-save)
-
-(load-file "~/.emacs.d/plugins/rect-mark.el")
-(require 'rect-mark)
-(global-set-key (kbd "C-x r C-w")   'rm-kill-region)
-(global-set-key (kbd "C-x r C-SPC") 'rm-set-mark)
-(global-set-key (kbd "C-w")  
-  '(lambda(b e) (interactive "r") 
-     (if rm-mark-active 
-       (rm-kill-region b e) (kill-region b e))))
-(global-set-key (kbd "M-w")  
-  '(lambda(b e) (interactive "r") 
-     (if rm-mark-active 
-       (rm-kill-ring-save b e) (kill-ring-save b e))))
-(global-set-key (kbd "C-x C-x")  
-  '(lambda(&optional p) (interactive "p") 
-     (if rm-mark-active 
-       (rm-exchange-point-and-mark p) (exchange-point-and-mark p))))
-(global-set-key (kbd "C-x r <down-mouse-1>") 'rm-mouse-drag-region)
