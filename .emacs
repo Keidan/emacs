@@ -1,4 +1,11 @@
 
+(setq additional-paths '("~" "~/.emacs.d"))
+(setq load-path (append additional-paths load-path))
+
+(load "~/.emacs.d/markdown-mode.el")
+
+(setq frame-title-format "%b")
+
 ;;;;;;;;;;;;;;;;;
 ;; APPEARANCE
 ;;;;;;;;;;;;;;;;;
@@ -13,6 +20,8 @@
 (setq auto-mode-alist (cons '("\\.cpp$" . c++-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.cxx$" . c++-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.tcl$" . tcl-mode) auto-mode-alist))
+(setq auto-mode-alist (cons '("\\.java$" . java-mode) auto-mode-alist))
+(setq auto-mode-alist (cons '("\\.md$" . markdown-mode) auto-mode-alist))
 
 ;; ========================================================
 ;; SYSTEME
@@ -207,9 +216,12 @@
       ("\\.x[ms]l\\'" . nxml-mode)
       ("\\.[sx]?html?\\'" . nxml-mode)
       ("\\.php\\'" . php-mode)
+      ("\\.java\\'" . java-mode)
       ("\\.sql\\'" . sql-mode)
       ("\\.tcl\\'" . tcl-mode)
       ("\\.vhd\\'" . vhdl-mode)
+      ("\\.java\\'" . java-mode)
+      ("\\.md\\'" . markdown-mode)
      )
      auto-mode-alist
   )
