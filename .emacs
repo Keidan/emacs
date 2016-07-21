@@ -3,8 +3,11 @@
 (setq load-path (append additional-paths load-path))
 
 (load "~/.emacs.d/markdown-mode.el")
+;(load "~/.emacs.d/font-lock.el")
+;(load "~/.emacs.d/fontl-hooks.el")
+(load "~/.emacs.d/sr-speedbar.el")
+(load "~/.emacs.d/tabbar.el")
 
-(setq frame-title-format "%b")
 
 ;;;;;;;;;;;;;;;;;
 ;; APPEARANCE
@@ -77,62 +80,8 @@
 ;; COULEURS
 ;;=========================================================
 
-;; Colorisation syntaxique maximale dans tous les modes
-(require 'font-lock)
-(global-font-lock-mode t)
-(setq font-lock-maximum-decoration t)
-
-;; Montrer la correspondance des parenthèses
-(require 'paren)
-(show-paren-mode t)
-(setq show-paren-style 'parenthesis)
-
-;; Couleur des parenthèses
-(set-face-background 'show-paren-match "blue")
-
-;; Couleur des chaines de caractères
-(setq font-lock-face-attributes '((font-lock-string-face "darkviolet")))
-
-;; Choix de la police de caractères en environnement graphique
-;(if (eq window-system 'x)
-;    (progn
-;      (set-default-font "FreeMono-11")
-;      ;; Taille par défaut de la fenêtre 80 x 35 caractères, et positionnement en pixel   
-;      (setq initial-frame-alist '((top 1) (left 1) (width 80) (height 35)))
-;      )
-;  )
-(setq default-frame-alist (append default-frame-alist
-                                  '((foreground-color . "white")
-                                    ;;(background-color . "slategrey")
-                                    (background-color . "black")
-                                    (cursor-color . "red"))))
-(setq font-lock-maximum-decoration t)
-(setq visible-bell t)
-(setq require-final-newline t)
-(setq resize-minibuffer-frame t)
-(setq column-number-mode t)
-(setq-default transient-mark-mode t)
-(setq next-line-add-newlines nil)
-(setq blink-matching-paren nil)
-(global-font-lock-mode t)
-(blink-cursor-mode -1)
-(tool-bar-mode -1)
-(tooltip-mode -1)
-(setq default-frame-alist (append default-frame-alist
-                                  '((foreground-color . "white")
-                                    (background-color . "slategrey")
-                                    (cursor-color . "red"))))
-
-(set-face-foreground 'bold "yellow")
-(set-face-background 'bold "grey40")
-
-(set-face-foreground 'bold-italic "yellow green")
-(set-face-foreground 'italic "yellow3")
-
-(set-face-foreground 'region "yellow4")
-(set-face-background 'region "grey75")
-
-
+; https://github.com/andre-richter/emacs-lush-theme
+(load-theme 'lush t)
 
 ;;=========================================================
 ;; PREFERENCES
@@ -220,7 +169,6 @@
       ("\\.sql\\'" . sql-mode)
       ("\\.tcl\\'" . tcl-mode)
       ("\\.vhd\\'" . vhdl-mode)
-      ("\\.java\\'" . java-mode)
       ("\\.md\\'" . markdown-mode)
      )
      auto-mode-alist
@@ -421,7 +369,6 @@
 ; Speedbar
 ;-------------
 ;(speedbar 1)
-(load "~/.emacs.d/sr-speedbar.el")
 (add-hook 'emacs-startup-hook (lambda ()
   (sr-speedbar-open)
 ))
@@ -433,7 +380,6 @@
 ;; ---------------------------------------
 ;; load tabbar
 ;; ---------------------------------------
-;(load "~/.emacs.d/tabbar.el")
 (require 'tabbar)
 (tabbar-mode 1)
 (tabbar-local-mode 1)
