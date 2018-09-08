@@ -1,12 +1,13 @@
 
-(setq additional-paths '("~" "~/.emacs.d"))
+(setq additional-paths '("~" "~/.emacs.d/lisp/"))
 (setq load-path (append additional-paths load-path))
 
-(load "~/.emacs.d/markdown-mode.el")
-;(load "~/.emacs.d/font-lock.el")
-;(load "~/.emacs.d/fontl-hooks.el")
-(load "~/.emacs.d/sr-speedbar.el")
-(load "~/.emacs.d/tabbar.el")
+(load "~/.emacs.d/lisp/lush-theme.el")
+(load "~/.emacs.d/lisp/markdown-mode.el")
+;(load "~/.emacs.d/lisp/font-lock.el")
+;(load "~/.emacs.d/lisp/fontl-hooks.el")
+(load "~/.emacs.d/lisp/sr-speedbar.el")
+(load "~/.emacs.d/lisp/tabbar.el")
 
 
 ;;;;;;;;;;;;;;;;;
@@ -441,9 +442,9 @@
 ;--------
 ; auto complete
 ;--------
-(add-to-list 'load-path "~/.emacs.d/auto-complete/")
+(add-to-list 'load-path "~/.emacs.d/lisp/auto-complete/")
 (require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/auto-complete/ac-dict")
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/lisp/auto-complete/ac-dict")
 (ac-config-default)
 
 ;--------
